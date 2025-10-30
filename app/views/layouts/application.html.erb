@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= content_for(:title) || "Myapp" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Myapp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+</head>
+
+<body>
+    <% if notice %>
+    <script>
+        alert("<%= j notice %>");
+    </script>
+    <% elsif alert %>
+    <script>
+        alert("<%= j alert %>");
+    </script>
+    <% end %>
+
+    <div class="w-full p-4 bg-gray-100 flex items-center space-x-8 mb-4">
+        <% if user_signed_in? %>
+        <%= link_to "Home", root_path, class: "ms-14" %>
+        <%= link_to "Profile", edit_user_registration_path , class: "mr-auto"%>
+
+        <div class="p-2 rounded bg-gray-200">
+            <%= form_with url: blog_posts_path, method: :get, local: true do %>
+            <%= text_field_tag :query, params[:query], placeholder: "Search blog by title...", class: "bg-white border rounded" %>
+            <%= submit_tag "Search", class: "px-1 bg-gray-400 rounded cursor-pointer"%>
+            <% end %>
+        </div>
+
+        <%= button_to "Create New Blog", new_blog_post_path, method: :get, class: "bg-blue-500 px-4 py-2 cursor-pointer rounded hover:bg-blue-600" %>
+        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "bg-red-500 px-4 py-2 cursor-pointer rounded hover:bg-red-600 me-14" %>
+        <% end %>
+    </div>
+
+    <%= yield %>
+</body>
+
+</html>

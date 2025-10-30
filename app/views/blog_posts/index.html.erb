@@ -1,0 +1,38 @@
+    <div class="max-w-lg mx-auto flex align-items-center justify-center">
+        <h1 class="text-4xl underline text-red-400">Blog Posts</h1>
+    </div>
+
+    <div class="flex flex-col max-w-2xl mx-auto mt-5 p-6 bg-white shadow rounded-lg">
+
+        <% @blog_posts.each do |blog_post| %>
+        <div>
+            <%if blog_post.featured_image.attached?%>
+            <div class="flex justify-center">
+                <%= image_tag blog_post.featured_image, style: "max-width: 300px; height: auto; border-radius: 8px;"%>
+            </div>
+            <% end %>
+            <h2 class="text-2xl font-bold hover:text-blue-500"><%= link_to blog_post.title, blog_post_path(blog_post.id) %></h2>
+            <div class="line-clamp-3 my-2">
+                <%= blog_post.content %>
+            </div>
+            <div class="flex justify-between text-sm text-gray-600">
+                <%= pluralize(blog_post.comments.count, "Comment") %>
+                <p>Created at: <%= blog_post.created_at.strftime("%Y-%m-%d %H:%M") %></p>
+            </div>
+            <hr class="my-3">
+        </div>
+        <% end %>
+
+        <div class="flex justify-center mt-6">
+            <%== pagy_nav(@pagy).gsub('<nav', '<nav class="flex items-center space-x-1"')
+                     .gsub('<a', '<a class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100"')
+                     .gsub('<span class="page active"', '<span class="px-3 py-1 bg-blue-500 text-white rounded"') %>
+        </div>
+        <%
+=begin%>
+        <div class="flex justify-center mt-4">
+            <%== pagy_nav(@pagy) %>
+        </div>
+        <%
+=end%>
+    </div>
