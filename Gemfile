@@ -69,6 +69,6 @@ gem "devise", "~> 4.9"
 gem "aws-sdk-s3", require: false
 gem 'pg_search'
 
-gem "pagy", "~> 9.4"
+gem "pagy", "~> 43.0"
 
 gem "tailwindcss-rails", "~> 4.4"
